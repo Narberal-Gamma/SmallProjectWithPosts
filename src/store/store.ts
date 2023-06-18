@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import createSagaMiddleware from "redux-saga"
-import postReducer from './slices/postsSlice'
+import postReducer from './post/slice'
 import rootWatcher from "./saga"
 
 const rootReducer = combineReducers({
@@ -12,7 +12,7 @@ const sagaMiddleware = createSagaMiddleware()
 const setup = () => {
     return configureStore({
         reducer: rootReducer,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware)
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware)
     })
 }
 

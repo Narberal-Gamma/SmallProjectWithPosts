@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { fetchPosts } from "../store/slices/postsSlice";
+import { asyncFetchPosts } from "../store/post/slice";
 
 const Posts: FC = () => {
 
@@ -8,14 +8,14 @@ const Posts: FC = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(fetchPosts())
+        dispatch(asyncFetchPosts())
     }, [])
 
     return (
         <div>
             Posts Page
             <hr />
-            {posts.map(post =>
+            {posts?.map(post =>
                 <div key={post.id}>
                     {post.id}) {post.title}
                     <div>

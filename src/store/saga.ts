@@ -1,5 +1,5 @@
 import { all } from "redux-saga/effects";
-import fetchPostsWatcher from "./postsSaga";
+import fetchPostsWatcher from "./post/saga";
 
 function* rootWatcher(){
     yield all([
