@@ -1,3 +1,8 @@
+export interface IPostResponse {
+    data: IAxiosResponsePost[],
+    total_count: number,
+}
+
 export interface IAxiosResponsePost {
     id: string,
     userId: string,

@@ -1,10 +1,19 @@
 import $api from "../api"
-import { IAxiosResponsePost } from "../types/Post"
+import { IAxiosResponsePost, IPostResponse } from "../types/Post"
 
 class PostService {
-    async getAllPosts(): Promise<IAxiosResponsePost[]> {
-        const { data } = await $api.get<IAxiosResponsePost[]>('/posts')
-        return data
+    async getAllPosts(limit: number, page: number): Promise<IPostResponse> {
+        const { data, headers } = await $api.get<IAxiosResponsePost[]>('/posts', {
+            params: {
+                _limit: limit,
+                _page: page
+            }
+        })
+        const total_count = headers['x-total-count']
+        return {
+            data,
+            total_count
+        }
     }
 }
 

@@ -1,11 +1,21 @@
 import { call, put, takeEvery } from "redux-saga/effects";
+import { PayloadAction } from "@reduxjs/toolkit";
 import PostService from "../../services/PostService";
-import { IAxiosResponsePost } from "../../types/Post";
-import { FETCH_POSTS, setPosts } from "./slice";
+import { IPostResponse } from "../../types/Post";
+import { FETCH_POSTS, setPostsError, setPostsLoading, setPostsSuccess } from "./slice";
+import getErrorType from "../../utils/getErrorType";
 
-function* fetchPostsWorker() {
-    const response: IAxiosResponsePost[] = yield call(PostService.getAllPosts)
-    yield put(setPosts(response))
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
+
+function* fetchPostsWorker(action: PayloadAction<{limit: number, page: number}>) {
+    try {
+        yield put(setPostsLoading())
+        yield delay(2000)
+        const response: IPostResponse = yield call(PostService.getAllPosts, action.payload.limit, action.payload.page)
+        yield put(setPostsSuccess(response))
+    } catch (e) {
+        yield put(setPostsError(getErrorType(e)))
+    }
 }
 
 function* fetchPostsWatcher() {
